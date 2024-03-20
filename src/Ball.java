@@ -78,8 +78,9 @@ public class Ball {
         return radius;
     }
 
-    public void setRadius(double radius) {
+    public Ball setRadius(double radius) {
         this.radius = radius;
+        return null;
     }
 
     public Color getColor() {
@@ -120,11 +121,11 @@ public class Ball {
         g2d.setStroke(new BasicStroke(outlineWidth));
 
         g.setColor(Color.BLACK);
-        g.drawOval((int) (x - radius), (int) (y - radius), (int) diameter, (int) diameter);
+        g.drawOval((int) (x - radius), (int) (y - radius), (int) radius*2, (int) radius*2);
 
         g.setColor(color);
 
-        g.fillOval((int) (x - radius), (int) (y - radius), (int) diameter, (int) diameter);
+        g.fillOval((int) (x - radius), (int) (y - radius), (int) radius*2, (int) radius*2);
 
 
     }
@@ -182,6 +183,10 @@ public class Ball {
         if (y - radius <= 0) {
             y = radius;
             ySpeed = -ySpeed;
+        }
+
+        if (x + radius >= MainGame.getWIDTH()-MainGame.getWIDTH()/4 ) {
+            xSpeed = -xSpeed;
         }
     }
 }

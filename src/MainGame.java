@@ -8,7 +8,7 @@ import java.util.ArrayList;
 @SuppressWarnings("serial")
 public class MainGame extends JPanel {
 
-    private static final int WIDTH = 800;
+    private static final int WIDTH = 1200;
     private static final int HEIGHT = 800;
 
     private BufferedImage image;
@@ -51,7 +51,7 @@ public class MainGame extends JPanel {
             g.setColor(Color.GREEN);
 
             paddle.draw(g);
-
+            Shop.draw(g);
 
             for (int i = 0; i < balls.size(); i++) {
                 balls.get(i).move(WIDTH, HEIGHT);
