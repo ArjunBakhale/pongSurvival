@@ -172,7 +172,7 @@ public class Ball {
 
         if (x - radius <= (Paddle.getX() + Paddle.getWIDTH()) && y >= Paddle.getY() && y <= Paddle.getY() + Paddle.getHEIGHT()) {
             xSpeed = -xSpeed;
-			Scoreboard.playerScored();
+            Scoreboard.playerScored();
         }
 
         if (y + radius >= bottomEdge) {

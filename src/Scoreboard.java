@@ -8,12 +8,13 @@ public class Scoreboard {
 
     public Scoreboard() {
         player1X = (int) (MainGame.getWIDTH()/2.0) - 80;
-        this.multiplier = 2; // Initialize multiplier to 1
+        multiplier = 1; // Initialize multiplier to 1
 
     }
 
     public static void playerScored(){
-        playerScore = (int)(playerScore + 1 * getMultiplier());
+
+        playerScore = (int)(playerScore + 1 + getMultiplier());
     }
 
     public static double getMultiplier() {
@@ -24,6 +25,13 @@ public class Scoreboard {
         Scoreboard.multiplier = multiplier;
     }
 
+    public static void addMultiplier(double multiplier) {
+        Scoreboard.multiplier += multiplier;
+    }
+
+    public static Scoreboard getPlayerScore() {
+        return playerScore;
+    }
     public static void draw(Graphics g) {
         g.setFont(consolas);
         g.setColor(Color.GREEN);

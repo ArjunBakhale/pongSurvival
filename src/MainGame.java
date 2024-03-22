@@ -1,5 +1,4 @@
-import java.awt.Color;
-import java.awt.Graphics;
+import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import javax.swing.*;
@@ -30,7 +29,7 @@ public class MainGame extends JPanel {
         g = image.getGraphics();
 
         paddle = new Paddle(WIDTH/16, HEIGHT/2); // Initialize the paddle
-        balls.add(new Ball(Math.random()*WIDTH, Math.random()*HEIGHT, HEIGHT/16, Color.red));
+        balls.add(new Ball(Math.random()*(WIDTH/2), Math.random()*HEIGHT, HEIGHT/16, Color.red));
 
         addKeyListener(new Keyboard());
         addMouseListener(new Mouse());
@@ -40,6 +39,10 @@ public class MainGame extends JPanel {
 
         timer = new Timer(10, new TimerListener());
         timer.start();
+    }
+
+    public static Component getGamePanel() {
+        return null;
     }
 
     private class TimerListener implements ActionListener {

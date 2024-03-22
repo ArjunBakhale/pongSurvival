@@ -64,6 +64,8 @@ public class Paddle {
 
     }
 
+
+
     public void moveUp() {
         this.y -= speed;
     }
