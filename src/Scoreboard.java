@@ -29,7 +29,7 @@ public class Scoreboard {
         Scoreboard.multiplier += multiplier;
     }
 
-    public static Scoreboard getPlayerScore() {
+    public static int getPlayerScore() {
         return playerScore;
     }
     public static void draw(Graphics g) {

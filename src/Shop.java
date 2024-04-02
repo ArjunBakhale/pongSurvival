@@ -5,7 +5,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 
-public class Shop implements MouseListener{
+public class Shop implements MouseListener {
     private static final int SHOP_WIDTH = MainGame.getWIDTH() / 4; // adjust as needed
     private static final int SHOP_HEIGHT = MainGame.getHEIGHT();
 
@@ -15,44 +15,35 @@ public class Shop implements MouseListener{
         // Add this as a MouseListener to your game panel
         MainGame.getGamePanel().addMouseListener(this);
     }
+
     @Override
     public void mouseClicked(MouseEvent e) {
         int x = e.getX();
         int y = e.getY();
 
         // Check if the click was within the bounds of the shop items
-        if (x >= shopX && x <= shopX + SHOP_WIDTH) {
-            if (y >= textY && y <= textY + 20) {
-                // Increase paddle size
-                increasePaddleSize(Paddle.getHEIGHT());
-            } else if (y >= textY + 20 && y <= textY + 40) {
-                // Increase ball size
-                increaseBallSize(MainGame.getBall());
-            } else if (y >= textY + 40 && y <= textY + 60) {
-                // Increase score multiplier
-                increaseScoreMultiplier(Scoreboard.getPlayerScore());
-            } else if (y >= textY + 60 && y <= textY + 80) {
-                // Add a ball
-                addBall();
-            }
-        }
+
     }
 
     @Override
-    public void mousePressed(MouseEvent e) {}
+    public void mousePressed(MouseEvent e) {
+    }
 
     @Override
-    public void mouseReleased(MouseEvent e) {}
+    public void mouseReleased(MouseEvent e) {
+    }
 
     @Override
-    public void mouseEntered(MouseEvent e) {}
+    public void mouseEntered(MouseEvent e) {
+    }
 
     @Override
-    public void mouseExited(MouseEvent e) {}
+    public void mouseExited(MouseEvent e) {
+    }
 
-    public void increasePaddleSize(int paddle) {
+    public void increasePaddleSize() {
         // Increase the size of the paddle
-        paddle.setHEIGHT(paddle.getHEIGHT() + 1);
+        Paddle.setHEIGHT(Paddle.getHEIGHT() + 1);
     }
 
     public void increaseBallSize(Ball ball) {
@@ -94,10 +85,16 @@ public class Shop implements MouseListener{
 
         // Draw shop items
         int textX = shopX + SHOP_WIDTH / 2;
-        int textY = SHOP_HEIGHT / 2; // Adjust this value as needed
-        g.drawString("Increase Paddle Size", textX, textY);
-        g.drawString("Increase Ball Size", textX, textY + 20);
-        g.drawString("Increase Score Multiplier", textX, textY + 40);
-        g.drawString("Add a Ball", textX, textY + 60);
+        int buttonHeight = SHOP_HEIGHT / 5; // Adjust this value as needed
+
+        String[] buttons = {"Increase Paddle Size", "Increase Ball Size", "Increase Score Multiplier", "Add a Ball"};
+
+        for (int i = 0; i < buttons.length; i++) {
+            int textY = buttonHeight * (i + 1);
+            g.setColor(Color.WHITE);
+            g.fillRect(shopX, textY - buttonHeight, SHOP_WIDTH, buttonHeight);
+            g.setColor(Color.BLACK);
+            g.drawString(buttons[i], textX, textY - buttonHeight / 2);
+        }
     }
 }

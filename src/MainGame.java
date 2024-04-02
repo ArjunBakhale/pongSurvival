@@ -2,6 +2,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import javax.swing.*;
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 
 @SuppressWarnings("serial")
@@ -14,6 +15,7 @@ public class MainGame extends JPanel {
     private Graphics g;
     private Timer timer;
     private Paddle paddle;
+    private boolean paused;
 
     public static ArrayList<Ball> balls = new ArrayList<Ball>();
     public static int getWIDTH() {
@@ -30,7 +32,7 @@ public class MainGame extends JPanel {
 
         paddle = new Paddle(WIDTH/16, HEIGHT/2); // Initialize the paddle
         balls.add(new Ball(Math.random()*(WIDTH/2), Math.random()*HEIGHT, HEIGHT/16, Color.red));
-
+        paused=false;
         addKeyListener(new Keyboard());
         addMouseListener(new Mouse());
 
@@ -57,10 +59,14 @@ public class MainGame extends JPanel {
             Shop.draw(g);
 
             for (int i = 0; i < balls.size(); i++) {
-                balls.get(i).move(WIDTH, HEIGHT);
+                if(!paused){
+                    balls.get(i).move(WIDTH, HEIGHT);
+                }
                 balls.get(i).draw(g);
+            }
 
-
+            if (paused) {
+                shopscreen.draw(g);
             }
 
             //display the score
@@ -79,6 +85,24 @@ public class MainGame extends JPanel {
             if (SwingUtilities.isLeftMouseButton(e)) {
                 balls.add(new Ball(e.getX(), e.getY(), HEIGHT/16, Color.red));
             }
+            //System.out.println(e.getX());
+
+            if (SwingUtilities.isRightMouseButton(e)) {
+                if(e.getX() >WIDTH - WIDTH/16 && e.getY() < HEIGHT/16) {
+
+                    paused = !paused;
+                    System.out.println("working");
+
+                }
+            }
+            System.out.println(WIDTH - WIDTH /16);
+            System.out.println(e.getX());
+
+            System.out.println(HEIGHT/16);
+            System.out.println(e.getY());
+
+
+
         }
 
         @Override

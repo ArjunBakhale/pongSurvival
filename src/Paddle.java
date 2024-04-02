@@ -34,8 +34,8 @@ public class Paddle {
         return HEIGHT;
     }
 
-    public void setHEIGHT(int HEIGHT) {
-        this.HEIGHT = HEIGHT;
+    public static void setHEIGHT(int HEIGHT) {
+        HEIGHT = HEIGHT;
     }
 
     private static int WIDTH = MainGame.getWIDTH()/100;
