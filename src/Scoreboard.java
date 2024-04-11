@@ -13,9 +13,12 @@ public class Scoreboard {
     }
 
     public static void playerScored(){
-
         playerScore = (int)(playerScore + 1 + getMultiplier());
     }
+
+    
+
+
 
     public static double getMultiplier() {
         return multiplier;
@@ -32,11 +35,22 @@ public class Scoreboard {
     public static int getPlayerScore() {
         return playerScore;
     }
-    public static void draw(Graphics g) {
-        g.setFont(consolas);
-        g.setColor(Color.GREEN);
-        g.drawString("Score: " + playerScore, player1X, 60);
-    }
 
+    public static void setPlayerScore(int increment) {
+        Scoreboard.playerScore -= increment ;
+    }
+    public static void draw(Graphics g) {
+        g.setColor(Color.WHITE);
+
+        // Use a different font
+        Font newFont = new Font("Serif", Font.BOLD, 60);
+        g.setFont(newFont);
+
+        // Add padding from the top and left of the screen
+        int paddingX = 40; // adjust as needed
+        int paddingY = 40; // adjust as needed
+
+        g.drawString("Score: " + playerScore, player1X + paddingX, 60 + paddingY);
+    }
 
 }

@@ -20,48 +20,49 @@ public class Paddle {
 
     private static int x;
     private static int y;
-    private int speed = 20;
+    private int speed ;
 
     public static int getWIDTH() {
-        return WIDTH;
+        return Paddle_WIDTH;
     }
 
     public void setWIDTH(int WIDTH) {
-        this.WIDTH = WIDTH;
+        this.Paddle_WIDTH = WIDTH;
     }
 
     public static int getHEIGHT() {
-        return HEIGHT;
+        return Paddle_HEIGHT;
     }
 
     public static void setHEIGHT(int HEIGHT) {
-        HEIGHT = HEIGHT;
+        Paddle_HEIGHT = HEIGHT;
     }
 
-    private static int WIDTH = MainGame.getWIDTH()/100;
-    private static int HEIGHT = MainGame.getHEIGHT()/100*20;
+    private static int Paddle_WIDTH; 
+    private static int Paddle_HEIGHT;
 
 
     public Paddle(int x, int y) {
         this.x = x;
         this.y = y;
+        this.Paddle_WIDTH = MainGame.getWIDTH()/100;
+        this.Paddle_HEIGHT = MainGame.getHEIGHT()/100*20;
+        this.speed = Paddle_HEIGHT/2;
     }
     public void draw(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
 
-
         int outlineWidth = 8;
         g2d.setStroke(new BasicStroke(outlineWidth));
 
+        // Set color to dark blue
+        g.setColor(Color.DARK_GRAY);
+        // Fill a round rectangle
+        g.fillRoundRect(x, y, Paddle_WIDTH, Paddle_HEIGHT, 10, 10);
+
+        // Set color to black for the outline
         g.setColor(Color.BLACK);
-        g.drawRect(x, y, WIDTH, HEIGHT);
-
-        g.setColor(Color.GREEN);
-
-        g.fillRect(x, y, WIDTH, HEIGHT);
-
-
-
+        // Draw the outline of the round rectangle
     }
 
 

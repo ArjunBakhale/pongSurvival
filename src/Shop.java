@@ -9,6 +9,11 @@ public class Shop implements MouseListener {
     private static final int SHOP_WIDTH = MainGame.getWIDTH() / 4; // adjust as needed
     private static final int SHOP_HEIGHT = MainGame.getHEIGHT();
 
+    private static int paddleUpgrade= 0;
+    private static int ballUpgrade = 0;
+    private static int scoreUpgrade = 0;
+
+
 
     public Shop() {
         // Initialize the shop
@@ -41,21 +46,25 @@ public class Shop implements MouseListener {
     public void mouseExited(MouseEvent e) {
     }
 
-    public void increasePaddleSize() {
+    public static void increasePaddleSize() {
         // Increase the size of the paddle
-        Paddle.setHEIGHT(Paddle.getHEIGHT() + 1);
+        Paddle.setHEIGHT(Paddle.getHEIGHT() + 40);
+        paddleUpgrade++;
     }
 
-    public void increaseBallSize(Ball ball) {
+    public static void increaseBallSize() {
         // Increase the size of the ball
+        int ballIncrement = 10;
         for (int i = 0; i < MainGame.balls.size(); i++) {
-            Ball balls = MainGame.balls.get(i).setRadius(MainGame.balls.get(i).getRadius() + 1);
+            Ball balls = MainGame.balls.get(i).setRadius(MainGame.balls.get(i).getRadius() + ballIncrement);
         }
+        ballUpgrade++;
     }
 
-    public void increaseScoreMultiplier(Scoreboard scoreboard) {
+    public static void increaseScoreMultiplier() {
         // Increase the score multiplier
         Scoreboard.setMultiplier(Scoreboard.getMultiplier() + 0.75);
+        scoreUpgrade++;
     }
 
     public void addBall() {
@@ -84,13 +93,15 @@ public class Shop implements MouseListener {
         g.setColor(Color.BLACK);
 
         // Draw shop items
-        int textX = shopX + SHOP_WIDTH / 2;
-        int buttonHeight = SHOP_HEIGHT / 5; // Adjust this value as needed
+        int textX = shopX + SHOP_WIDTH / 4;
+        int buttonHeight = SHOP_HEIGHT / 19; // Adjust this value as needed
 
-        String[] buttons = {"Increase Paddle Size", "Increase Ball Size", "Increase Score Multiplier", "Add a Ball"};
-
+        String[] buttons = {"1: Paddle Size   " + paddleUpgrade, "2: Ball Size   " + ballUpgrade, "3: Score Multiplier   " + scoreUpgrade, "4: Balls   " + MainGame.balls.size()};
+        int padding = SHOP_HEIGHT/20;
+        int startY = SHOP_HEIGHT/4;
         for (int i = 0; i < buttons.length; i++) {
-            int textY = buttonHeight * (i + 1);
+
+            int textY = buttonHeight * (i + 1) + padding * i + startY;
             g.setColor(Color.WHITE);
             g.fillRect(shopX, textY - buttonHeight, SHOP_WIDTH, buttonHeight);
             g.setColor(Color.BLACK);

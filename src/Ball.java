@@ -2,10 +2,13 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.BasicStroke;
 import java.awt.Graphics2D;
+import java.util.Iterator;
+import java.awt.GradientPaint;
 
 public class Ball {
 
     // 1. Declaration of Variables
+    private double speedup = 1.25;
 
     private double x;            //x-coordinate of the center of the ball
     private double y;            //y-coordinate of the center of the ball
@@ -14,7 +17,7 @@ public class Ball {
     private Color color;        //color of the ball
     private double xSpeed;        //x-speed = change in x-position
     private double ySpeed;        //y-speed = change in y-position
-
+    private static boolean forgive = true;
 
     // 2. Create a default constructor
 
@@ -43,13 +46,26 @@ public class Ball {
         this.diameter = diameter;
         this.radius = diameter / 2;
         this.color = color;
-        this.xSpeed = 10;
-        this.ySpeed = 10;
+
+        if (Math.random() < 0.5) {
+            this.xSpeed = -10;
+        } else {
+            this.xSpeed = 10;
+        }
+
+        if (Math.random() < 0.5) {
+            this.ySpeed = -10;
+        } else {
+            this.ySpeed = 10;
+        }
     }
 
 
     // 4. Create getters and setters for all private variables
 
+    public static boolean getForgive() {
+        return forgive;
+    }
     public double getX() {
         return x;
     }
@@ -113,22 +129,25 @@ public class Ball {
 
     // 6. Test using BouncingBallTester.java
 
-    public void draw(Graphics g) {
-        Graphics2D g2d = (Graphics2D) g;
 
+public void draw(Graphics g) {
+    Graphics2D g2d = (Graphics2D) g;
 
-        int outlineWidth = 8;
-        g2d.setStroke(new BasicStroke(outlineWidth));
+    // Set two constant colors
+    Color color1 = Color.GRAY;
+    Color color2 = Color.WHITE;
 
-        g.setColor(Color.BLACK);
-        g.drawOval((int) (x - radius), (int) (y - radius), (int) radius*2, (int) radius*2);
+    // Create a gradient from the top (x, y - radius) to the bottom (x, y + radius) of the ball
+    GradientPaint gradient = new GradientPaint((float)x, (float)(y - radius), color1, (float)x, (float)(y + radius), color2);
 
-        g.setColor(color);
+    g2d.setPaint(gradient);
+    g.fillOval((int) (x - radius), (int) (y - radius), (int) radius*2, (int) radius*2);
 
-        g.fillOval((int) (x - radius), (int) (y - radius), (int) radius*2, (int) radius*2);
-
-
-    }
+    int outlineWidth = 2;
+    g2d.setStroke(new BasicStroke(outlineWidth));
+    g.setColor(Color.BLACK);
+    g.drawOval((int) (x - radius), (int) (y - radius), (int) radius*2, (int) radius*2);
+}
 
 
     // 7. Sets the center location of the ball
@@ -153,27 +172,44 @@ public class Ball {
     // 9. Write the move method to make the ball move around the screen
     // and bounce of the edges.
     public void move(int rightEdge, int bottomEdge) {
-        this.x += xSpeed;
-        this.y += ySpeed;
+        this.x += (int)(xSpeed* (0.8));
+        this.y += (int)(ySpeed* (0.8));
 
         if (x + radius >= rightEdge) {
             x = rightEdge - radius;
             xSpeed = -xSpeed;
+
+
+
         }
 
-        if (x - radius <= 0) {
-            if (MainGame.balls.size() > 1) {
-                MainGame.balls.remove(this);
-                return;
-            } else {
-                xSpeed = -xSpeed;
+        Iterator<Ball> iterator = MainGame.balls.iterator();
+        while (iterator.hasNext()) {
+            Ball ball = iterator.next();
+        
+            if (ball.x - ball.radius <= 0) {
+                if (forgive == false) {
+                    iterator.remove();
+                    continue;
+                } else {
+                    ball.xSpeed = -ball.xSpeed;
+                    forgive = false;
+                }
             }
+        
+            // ... other code ...
         }
 
-        if (x - radius <= (Paddle.getX() + Paddle.getWIDTH()) && y >= Paddle.getY() && y <= Paddle.getY() + Paddle.getHEIGHT()) {
+        if (x - radius <= (Paddle.getX()+ Paddle.getWIDTH()) && y >= Paddle.getY() && y <= Paddle.getY() + Paddle.getHEIGHT()) {
+            
             xSpeed = -xSpeed;
+
+            x = Paddle.getX() + radius*1.2;
+             // Move the ball outside the paddle
             Scoreboard.playerScored();
         }
+
+        
 
         if (y + radius >= bottomEdge) {
             y = bottomEdge - radius;
@@ -187,6 +223,21 @@ public class Ball {
 
         if (x + radius >= MainGame.getWIDTH()-MainGame.getWIDTH()/4 ) {
             xSpeed = -xSpeed;
+            speedup = Math.pow(speedup, 1.005); // Increase speedup exponentially
+
+            if(xSpeed < 0){
+                xSpeed -= speedup;
+            }
+            else{
+                xSpeed += speedup;
+            }
+
+            if(ySpeed < 0){
+                ySpeed -= speedup;
+            }
+            else{
+                ySpeed += speedup;
+            }
         }
     }
 }

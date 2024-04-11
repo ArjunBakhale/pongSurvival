@@ -1,7 +1,4 @@
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Graphics;
-
+import java.awt.*;
 
 public class shopscreen {
     private static final Font consolas = new Font("Consolas", Font.PLAIN, 60);
@@ -37,6 +34,8 @@ public class shopscreen {
     }
 
     public static void draw(Graphics g) {
+        Graphics2D g2d = (Graphics2D) g;
+
         int modalWidth = MainGame.getWIDTH() / 2;
         int modalHeight = MainGame.getHEIGHT() / 2;
         int modalX = (MainGame.getWIDTH() - modalWidth) / 2;
@@ -50,21 +49,29 @@ public class shopscreen {
 
         // Draw the buttons and the text on the buttons
         String[] buttons = {"Increase Paddle Size", "Increase Ball Size", "Increase Score Multiplier", "Add a Ball"};
+
+        // Calculate the width of the widest button
+        int maxTextWidth = MainGame.getWIDTH()/2;
+
+
+        // Increase the font size
+        g.setFont(new Font("Consolas", Font.PLAIN, 25));
+
         for (int i = 0; i < buttons.length; i++) {
             int buttonY = modalY + 20 + i * (buttonHeight + 20);
 
-            // Calculate the width of the text
-            int textWidth = g.getFontMetrics().stringWidth(buttons[i]);
+            // Create a gradient from the left (buttonX) to the right (buttonX + maxTextWidth) of the button
+            GradientPaint gradient = new GradientPaint(buttonX, buttonY, Color.GRAY, buttonX + maxTextWidth, buttonY, Color.WHITE);
 
-            // Draw the button with a black outline and translucent white fill
-            g.setColor(Color.BLACK);
-            g.fillRect(buttonX - 5, buttonY - 5, textWidth + 10, buttonHeight + 10);
-            g.setColor(new Color(255, 255, 255, 200)); // Translucent white
-            g.fillRect(buttonX, buttonY, textWidth, buttonHeight);
+            g2d.setPaint(gradient);
+            g.fillRect(buttonX, buttonY, maxTextWidth, buttonHeight);
+            g2d.setColor(Color.BLACK);
+            g.drawRect(buttonX, buttonY, maxTextWidth, buttonHeight);
 
-            // Draw the text
+            // Draw the text with padding from the left of the button
+            int textPadding = 10;
             g.setColor(Color.BLACK);
-            g.drawString(buttons[i], buttonX, buttonY + buttonHeight / 2);
+            g.drawString(buttons[i], buttonX + textPadding, buttonY + buttonHeight / 2);
         }
     }
 }
