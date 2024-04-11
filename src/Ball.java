@@ -197,7 +197,6 @@ public void draw(Graphics g) {
                 }
             }
         
-            // ... other code ...
         }
 
         if (x - radius <= (Paddle.getX()+ Paddle.getWIDTH()) && y >= Paddle.getY() && y <= Paddle.getY() + Paddle.getHEIGHT()) {
