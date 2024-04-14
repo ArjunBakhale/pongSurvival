@@ -46,8 +46,8 @@ public class Paddle {
         this.x = x;
         this.y = y;
         this.Paddle_WIDTH = MainGame.getWIDTH()/100;
-        this.Paddle_HEIGHT = MainGame.getHEIGHT()/100*20;
-        this.speed = Paddle_HEIGHT/2;
+        this.Paddle_HEIGHT = MainGame.getHEIGHT()/4;
+        this.speed = Paddle_HEIGHT/25;
     }
     public void draw(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;

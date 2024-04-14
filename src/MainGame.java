@@ -9,7 +9,8 @@ import java.util.List;
 
 @SuppressWarnings("serial")
 public class MainGame extends JPanel {
-
+private boolean isUpPressed;
+    private boolean isDownPressed;
     private static final int WIDTH = 1200;
     private static final int HEIGHT = 800;
 
@@ -32,7 +33,7 @@ public class MainGame extends JPanel {
         image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
         g = image.getGraphics();
 
-        paddle = new Paddle(5, HEIGHT/2); // Initialize the paddle
+        paddle = new Paddle(10, HEIGHT/2); // Initialize the paddle
         balls.add(new Ball((WIDTH/2), HEIGHT/2, HEIGHT/20, Color.red));
         paused=false;
         addKeyListener(new Keyboard());
@@ -60,7 +61,12 @@ public class MainGame extends JPanel {
 
 
             g.setColor(Color.GREEN);
-
+            if (isUpPressed) {
+                paddle.moveUp();
+            }
+            if (isDownPressed) {
+                paddle.moveDown();
+            }
             paddle.draw(g);
             Shop.draw(g);
 
@@ -98,7 +104,7 @@ public class MainGame extends JPanel {
                 int stringHeight = g.getFontMetrics().getHeight();
                 int x = (WIDTH - stringWidth) / 2;
                 int y = (HEIGHT - stringHeight) / 2 + stringHeight;
-            
+
                 // Draw the outline
                 g.setColor(Color.BLACK);
                 for (int i = -3; i <= 3; i++) {
@@ -106,7 +112,7 @@ public class MainGame extends JPanel {
                         g.drawString(gameOver, x + i, y + j);
                     }
                 }
-            
+
                 // Draw the text
                 g.setColor(Color.RED);
                 g.drawString(gameOver, x, y);
@@ -120,7 +126,7 @@ public class MainGame extends JPanel {
                 int stringHeight = g.getFontMetrics().getHeight();
                 int x = (WIDTH - stringWidth) / 2;
                 int y = (HEIGHT - stringHeight) / 2 + stringHeight;
-            
+
                 // Draw the outline
                 g.setColor(Color.BLACK);
                 for (int i = -3; i <= 3; i++) {
@@ -128,10 +134,12 @@ public class MainGame extends JPanel {
                         g.drawString(gameOver, x + i, y + j);
                     }
                 }
-            
+
                 // Draw the text
                 g.setColor(Color.WHITE);
                 g.drawString(gameOver, x, y);
+
+
             }
             repaint();
         }
@@ -141,7 +149,7 @@ public class MainGame extends JPanel {
     private class Mouse implements MouseListener {
         @Override
         public void mouseClicked(MouseEvent e) {
-            
+
 
             if (SwingUtilities.isRightMouseButton(e)) {
 //                if(e.getX() >WIDTH - WIDTH/16 && e.getY() < HEIGHT/16) {
@@ -154,7 +162,7 @@ public class MainGame extends JPanel {
                 if(e.getX() >900 && e.getY() < 100) {
 
                     paused = !paused;
-                    
+
 
 
 
@@ -166,19 +174,19 @@ public class MainGame extends JPanel {
 
 
             if (SwingUtilities.isLeftMouseButton(e) && paused==true) {
-                
+
                 int SHOP_WIDTH = MainGame.getWIDTH() / 4; // adjust as needed
                 int SHOP_HEIGHT = MainGame.getHEIGHT();
                 int shopX = MainGame.getWIDTH() - SHOP_WIDTH;
                 int buttonHeight = SHOP_HEIGHT / 19;
                 int padding = SHOP_HEIGHT/20;
                 int startY = SHOP_HEIGHT/4;
-            
+
                 int textY1 = buttonHeight * 1 + padding * 0 + startY;
                 int textY2 = buttonHeight * 2 + padding * 1 + startY;
                 int textY3 = buttonHeight * 3 + padding * 2 + startY;
                 int textY4 = buttonHeight * 4 + padding * 3 + startY;
-                
+
                 if ((e.getX() >= 280 && e.getX() <= 840) && (e.getY() >= 180 && e.getY() <= 250) && (Scoreboard.getPlayerScore() >= 4)) {
                     Shop.increasePaddleSize();
                     Scoreboard.setPlayerScore(4);
@@ -224,6 +232,12 @@ public class MainGame extends JPanel {
     private class Keyboard implements KeyListener {
         @Override
         public void keyReleased(KeyEvent e) {
+            if (e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_W) {
+                isUpPressed = false;
+            }
+            if (e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_S) {
+                isDownPressed = false;
+            }
         }
 
         @Override
@@ -233,25 +247,25 @@ public class MainGame extends JPanel {
         @Override
         public void keyPressed(KeyEvent e) {
             if (e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_W) {
-                paddle.moveUp();
+                isUpPressed = true;
             }
             if (e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_S) {
-                paddle.moveDown();
+                isDownPressed= true;
             }
 
-            if (e.getKeyCode() == KeyEvent.VK_1) {
+            if (e.getKeyCode() == KeyEvent.VK_1 && Scoreboard.getPlayerScore() >= 4){
                 Shop.increasePaddleSize();
                 Scoreboard.setPlayerScore(4);
             }
-            if (e.getKeyCode() == KeyEvent.VK_2) {
+            if (e.getKeyCode() == KeyEvent.VK_2  && Scoreboard.getPlayerScore() >= 2) {
                 Shop.increaseBallSize();
                 Scoreboard.setPlayerScore(2);
             }
-            if (e.getKeyCode() == KeyEvent.VK_3) {
+            if (e.getKeyCode() == KeyEvent.VK_3 && Scoreboard.getPlayerScore() >= 6){
                 Shop.increaseScoreMultiplier();
                 Scoreboard.setPlayerScore(6);
             }
-            if (e.getKeyCode() == KeyEvent.VK_4) {
+            if (e.getKeyCode() == KeyEvent.VK_4 && Scoreboard.getPlayerScore() >= 1){
                 balls.add(new Ball(MainGame.getWIDTH() / 2, MainGame.getHEIGHT() / 2, HEIGHT / 16, Color.red));
                 Scoreboard.setPlayerScore(1);
             }
@@ -259,7 +273,9 @@ public class MainGame extends JPanel {
             if(e.getKeyCode() == KeyEvent.VK_P || e.getKeyCode() == KeyEvent.VK_SPACE){
                 paused = !paused;
             }
-            
+
+
+
         }
     }
 

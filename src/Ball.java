@@ -8,7 +8,7 @@ import java.awt.GradientPaint;
 public class Ball {
 
     // 1. Declaration of Variables
-    private double speedup = 1.25;
+    private double speedup = 1.1; // Speedup factor
 
     private double x;            //x-coordinate of the center of the ball
     private double y;            //y-coordinate of the center of the ball
@@ -187,12 +187,13 @@ public void draw(Graphics g) {
         while (iterator.hasNext()) {
             Ball ball = iterator.next();
         
-            if (ball.x - ball.radius <= 0) {
+            if (ball.x - ball.radius*speedup<= 0) {
                 if (forgive == false) {
                     iterator.remove();
                     continue;
                 } else {
                     ball.xSpeed = -ball.xSpeed;
+                    ball.x = ball.radius*1.2;
                     forgive = false;
                 }
             }
@@ -203,7 +204,7 @@ public void draw(Graphics g) {
             
             xSpeed = -xSpeed;
 
-            x = Paddle.getX() + radius*1.2;
+            x = Paddle.getX() + radius*2;
              // Move the ball outside the paddle
             Scoreboard.playerScored();
         }
